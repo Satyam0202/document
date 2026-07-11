@@ -101,10 +101,8 @@
             <% }) %>
           </select>
           <select name="storage">
-            <option value="Local">Local</option>
-            <option value="GitHub">GitHub</option>
             <option value="Google Drive">Google Drive</option>
-            <option value="Both">Both</option>
+            <option value="Local">Local (fallback)</option>
           </select>
           <button type="submit">Upload Document</button>
         </form>
@@ -115,16 +113,12 @@
           <h3>Storage Summary</h3>
           <div class="stats-row">
             <div>
-              <p>Local</p>
-              <strong><%= storageSummary.Local %></strong>
-            </div>
-            <div>
-              <p>GitHub</p>
-              <strong><%= storageSummary.GitHub %></strong>
-            </div>
-            <div>
               <p>Google Drive</p>
               <strong><%= storageSummary['Google Drive'] %></strong>
+            </div>
+            <div>
+              <p>Local</p>
+              <strong><%= storageSummary.Local %></strong>
             </div>
           </div>
         </article>

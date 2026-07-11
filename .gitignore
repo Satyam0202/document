@@ -1,3 +1,6 @@
 node_modules/
 uploads/
 .env
+gdrive-service-account.json
+*.key
+*.pem

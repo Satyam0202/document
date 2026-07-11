@@ -7,8 +7,8 @@ const fs = require('fs');
 dotenv.config();
 
 // Support writing Google service account JSON from an environment variable.
-// This allows platforms that only accept env vars (like Render) to provide
-// the service account without uploading a file.
+// This allows Railway (and similar platforms) to provide the service account
+// via env var instead of uploading a file.
 if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
   try {
     const keyPath = path.join(__dirname, 'gdrive-service-account.json');
@@ -22,6 +22,9 @@ if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Railway runs behind a proxy — needed for secure cookies + correct IP
+app.set('trust proxy', 1);
 const uploadsDir = path.join(__dirname, 'uploads');
 
 fs.mkdirSync(uploadsDir, { recursive: true });
@@ -31,11 +34,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+const isProduction = process.env.NODE_ENV === 'production';
 app.use(session({
   secret: process.env.SESSION_SECRET || 'vault-secret',
   resave: false,
   saveUninitialized: false,
-  cookie: { httpOnly: true, secure: false }
+  cookie: {
+    httpOnly: true,
+    secure: isProduction,   // true in prod (HTTPS), false locally
+    sameSite: 'lax'
+  }
 }));
 
 const authRoutes = require('./routes/auth');
