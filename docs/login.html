@@ -1,23 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Login • Demo</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <main class="hero">
-    <section class="card">
-      <h1>Secure document access</h1>
-      <p class="small">This demo is static. Click the button to view the dashboard demo.</p>
-      <button id="go" class="button">Go to Dashboard</button>
-    </section>
-  </main>
-  <script>
-    document.getElementById('go').addEventListener('click', ()=>{
-      location.href='dashboard.html';
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4f46e5" />
+    <title>Login • Personal Document Vault</title>
+    <link rel="icon" href="images/favicon.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="login-page">
+    <main class="auth-shell login-shell">
+      <section class="login-card card">
+        <div class="login-card-grid">
+          <div class="login-copy">
+            <p class="eyebrow">Welcome back</p>
+            <h1>Secure document access</h1>
+            <p class="subtext">Log in to your Personal Document Vault and keep your most important files safe.</p>
+            <form class="login-form" onsubmit="handleLogin(event)">
+              <label>Username</label>
+              <input id="username" required placeholder="Enter username" autocomplete="username" />
+
+              <label>Password</label>
+              <input id="password" type="password" required placeholder="Enter password" autocomplete="current-password" />
+
+              <p id="error-msg" class="error" style="display:none;">Invalid username or password.</p>
+
+              <button type="submit">Login</button>
+            </form>
+          </div>
+          <div class="login-banner">
+            <img src="images/login.jpg" alt="Login image" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // Redirect if already logged in
+      if (sessionStorage.getItem('vault_auth') === 'true') {
+        window.location.href = 'dashboard.html';
+      }
+
+      function handleLogin(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('error-msg');
+
+        // Credentials check — change these values as needed
+        const VALID_USER = 'satyam02';
+        const VALID_PASS = 'Muskan!0202';
+
+        if (username === VALID_USER && password === VALID_PASS) {
+          sessionStorage.setItem('vault_auth', 'true');
+          sessionStorage.setItem('vault_user', username);
+          window.location.href = 'dashboard.html';
+        } else {
+          errorMsg.style.display = 'block';
+        }
+      }
+    </script>
+  </body>
 </html>

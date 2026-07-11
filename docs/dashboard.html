@@ -1,45 +1,334 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Dashboard • Demo</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <main class="hero">
-    <section class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div>
-          <p class="small">Document Locker</p>
-          <h2>Personal Document Vault</h2>
-          <p class="small">A demo of the dashboard UI. Uploads require the full server.</p>
-        </div>
-        <div>
-          <a class="button" href="index.html">Home</a>
-        </div>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4f46e5" />
+    <title>Dashboard • Personal Document Vault</title>
+    <link rel="icon" href="images/favicon.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="dashboard-page">
 
-      <div style="margin-top:18px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
-        <div style="flex:1;min-width:300px;">
-          <h3>Hello, satyam</h3>
-          <p class="small">A polished dashboard for secure uploads, smart organization, and instant access to your most important files.</p>
-          <div style="margin-top:12px;display:flex;gap:12px;">
-            <button class="button">View Documents</button>
-            <button class="button">Upload (needs server)</button>
-          </div>
-
-          <div style="margin-top:18px;display:flex;gap:12px;">
-            <div class="card" style="padding:12px;min-width:120px;">Documents<br><strong>12</strong></div>
-            <div class="card" style="padding:12px;min-width:120px;">Categories<br><strong>5</strong></div>
-          </div>
-        </div>
-        <div style="width:360px;">
-          <img src="https://raw.githubusercontent.com/Satyam0202/Satyam0202/master/public/images/profile.png" alt="profile" style="width:100%;border-radius:12px;">
-          <div style="margin-top:12px;" class="small">Secure vault status: <strong>Active</strong></div>
-        </div>
+    <header class="topbar container-fluid">
+      <div>
+        <p class="eyebrow">Document Locker</p>
+        <h1>Personal Document Vault</h1>
+        <p class="subtext">Securely upload, organize, and manage your important files in one place.</p>
       </div>
-    </section>
-  </main>
-</body>
+      <div class="topbar-actions">
+        <button id="themeToggle" class="ghost">🌙</button>
+        <button class="ghost" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <main class="dashboard container-fluid">
+
+      <!-- Hero -->
+      <section class="hero-grid">
+        <article class="profile-card card full-width-card hero-profile-card">
+          <div class="hero-profile-content">
+            <div class="hero-profile-copy">
+              <p class="eyebrow">Hello</p>
+              <h2>I'm <span id="hero-username"></span>,<br />your private document space.</h2>
+              <p class="hero-subtext">Keep your important files protected, organised, and ready whenever you need them.</p>
+              <div class="hero-actions">
+                <a class="hero-button primary" href="#upload">Upload File <span>→</span></a>
+                <a class="hero-button secondary" href="#documents">View Documents</a>
+              </div>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <strong id="stat-docs">0</strong>
+                  <span>Documents</span>
+                </div>
+                <div class="hero-stat">
+                  <strong id="stat-cats">0</strong>
+                  <span>Categories</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-profile-visual">
+              <span class="hero-vertical-label" aria-hidden="true">VAULT</span>
+              <div class="hero-image-frame">
+                <img src="images/profile.png" alt="Profile" class="hero-image" />
+              </div>
+              <div class="hero-highlight-card">
+                <p>Secure vault</p>
+                <strong><i></i> Active</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="feature-panel card full-width-card">
+          <div class="feature-header">
+            <p class="eyebrow">Vault features</p>
+            <h2>What you can do</h2>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <p class="feature-title">Upload files</p>
+              <span>Opens Google Drive — upload directly to your secure folder.</span>
+            </article>
+            <article class="feature-card">
+              <p class="feature-title">Organize categories</p>
+              <span>Quickly sort documents into the right groups.</span>
+            </article>
+            <article class="feature-card">
+              <p class="feature-title">Search instantly</p>
+              <span>Find items by file name, category, type, or date.</span>
+            </article>
+            <article class="feature-card">
+              <p class="feature-title">Manage securely</p>
+              <span>Add Drive links, rename, and remove entries.</span>
+            </article>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Upload -->
+      <section id="upload" class="card action-card full-width-card">
+        <div class="section-title">
+          <div>
+            <h3>Quick Upload</h3>
+            <p class="muted">Click the button below — Google Drive folder will open. Upload your file there, then paste the shareable link below to track it here.</p>
+          </div>
+        </div>
+
+        <div class="upload-form">
+          <!-- Step 1: Open Drive -->
+          <a
+            href="https://drive.google.com/drive/folders/1l8hQdOfzbpJkjQ6g8UPwd7i_0wokJDPE"
+            target="_blank"
+            class="action-link"
+            style="text-decoration:none;"
+          >
+            📁 Open Google Drive Folder
+          </a>
+
+          <!-- Step 2: Add document entry -->
+          <input id="new-doc-name" placeholder="File name (e.g. Marksheet 2024)" />
+          <input id="new-doc-link" placeholder="Google Drive shareable link (view link)" />
+          <input id="new-doc-download" placeholder="Google Drive download link (optional)" />
+          <select id="new-doc-category">
+            <option value="Education">Education</option>
+            <option value="Identity">Identity</option>
+            <option value="Career">Career</option>
+            <option value="Finance">Finance</option>
+            <option value="Personal">Personal</option>
+            <option value="Other">Other</option>
+          </select>
+          <button onclick="addDocument()">➕ Add to Dashboard</button>
+        </div>
+      </section>
+
+      <!-- Stats -->
+      <section class="panel-grid full-width-card">
+        <article class="card stats-card">
+          <h3>Storage Summary</h3>
+          <div class="stats-row">
+            <div>
+              <p>Google Drive</p>
+              <strong id="summary-drive">0</strong>
+            </div>
+            <div>
+              <p>Total Files</p>
+              <strong id="summary-total">0</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="card stats-card">
+          <h3>Recent Uploads</h3>
+          <ul class="recent-list" id="recent-list">
+            <li class="recent-empty">No uploads yet.</li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- Categories -->
+      <section class="card full-width-card">
+        <div class="section-title">
+          <h3>Categories</h3>
+        </div>
+        <div class="category-grid" id="category-grid">
+          <!-- filled by JS -->
+        </div>
+      </section>
+
+      <!-- Documents -->
+      <section id="documents" class="card full-width-card">
+        <div class="section-title">
+          <h3>Documents</h3>
+          <input
+            id="search-input"
+            placeholder="Search documents..."
+            style="max-width:260px; width:100%;"
+            oninput="renderDocuments()"
+          />
+        </div>
+        <div class="document-list" id="document-list">
+          <div class="empty-state">
+            <p>No documents added yet. Upload to Google Drive and add the link above.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <script>
+      // ── Auth guard ──────────────────────────────────────────────────────────
+      if (sessionStorage.getItem('vault_auth') !== 'true') {
+        window.location.href = 'login.html';
+      }
+
+      const username = sessionStorage.getItem('vault_user') || 'User';
+      document.getElementById('hero-username').textContent = username;
+
+      function logout() {
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+      }
+
+      // ── Theme toggle ────────────────────────────────────────────────────────
+      const themeBtn = document.getElementById('themeToggle');
+      themeBtn.addEventListener('click', () => {
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        themeBtn.textContent = isDark ? '🌙' : '☀️';
+        localStorage.setItem('vault_theme', isDark ? 'light' : 'dark');
+      });
+      const savedTheme = localStorage.getItem('vault_theme');
+      if (savedTheme) {
+        document.body.setAttribute('data-theme', savedTheme);
+        themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+      }
+
+      // ── Document storage (localStorage) ────────────────────────────────────
+      const STORAGE_KEY = 'vault_documents';
+
+      function loadDocuments() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        } catch {
+          return [];
+        }
+      }
+
+      function saveDocuments(docs) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(docs));
+      }
+
+      // ── Add document ────────────────────────────────────────────────────────
+      function addDocument() {
+        const name     = document.getElementById('new-doc-name').value.trim();
+        const link     = document.getElementById('new-doc-link').value.trim();
+        const download = document.getElementById('new-doc-download').value.trim();
+        const category = document.getElementById('new-doc-category').value;
+
+        if (!name || !link) {
+          alert('File name aur Drive view link dono required hain.');
+          return;
+        }
+
+        const docs = loadDocuments();
+        docs.push({
+          id: Date.now(),
+          name,
+          driveLink: link,
+          driveDownload: download || link,
+          category,
+          uploadedAt: new Date().toISOString()
+        });
+        saveDocuments(docs);
+
+        // Clear inputs
+        document.getElementById('new-doc-name').value = '';
+        document.getElementById('new-doc-link').value = '';
+        document.getElementById('new-doc-download').value = '';
+
+        renderAll();
+      }
+
+      // ── Delete document ─────────────────────────────────────────────────────
+      function deleteDocument(id) {
+        if (!confirm('Delete this document entry?')) return;
+        const docs = loadDocuments().filter(d => d.id !== id);
+        saveDocuments(docs);
+        renderAll();
+      }
+
+      // ── Render ──────────────────────────────────────────────────────────────
+      function renderAll() {
+        const docs = loadDocuments();
+
+        // Stats
+        document.getElementById('stat-docs').textContent   = docs.length;
+        document.getElementById('summary-drive').textContent = docs.length;
+        document.getElementById('summary-total').textContent = docs.length;
+
+        const cats = [...new Set(docs.map(d => d.category).filter(Boolean))];
+        document.getElementById('stat-cats').textContent = cats.length;
+
+        // Recent
+        const recentEl = document.getElementById('recent-list');
+        const recent = [...docs].sort((a,b) => new Date(b.uploadedAt) - new Date(a.uploadedAt)).slice(0,3);
+        recentEl.innerHTML = recent.length === 0
+          ? '<li class="recent-empty">No uploads yet.</li>'
+          : recent.map(d => `
+              <li>
+                <span>${d.name}</span>
+                <small>${new Date(d.uploadedAt).toLocaleDateString()}</small>
+              </li>`).join('');
+
+        // Categories
+        const allCats = ['Education', 'Identity', 'Career', 'Finance', 'Personal', ...cats].filter((v,i,a) => a.indexOf(v) === i);
+        document.getElementById('category-grid').innerHTML = allCats.map(cat => `
+          <article class="category-card">
+            <h4>${cat}</h4>
+            <p>${docs.filter(d => d.category === cat).length} documents</p>
+          </article>`).join('');
+
+        renderDocuments();
+      }
+
+      function renderDocuments() {
+        const docs  = loadDocuments();
+        const query = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+
+        const filtered = docs.filter(d =>
+          !query ||
+          d.name.toLowerCase().includes(query) ||
+          d.category.toLowerCase().includes(query)
+        );
+
+        const listEl = document.getElementById('document-list');
+        if (filtered.length === 0) {
+          listEl.innerHTML = `<div class="empty-state"><p>${
+            query ? 'No documents match your search.' : 'No documents added yet. Upload to Google Drive and add the link above.'
+          }</p></div>`;
+          return;
+        }
+
+        listEl.innerHTML = filtered.map(doc => `
+          <article class="document-item">
+            <div class="document-meta">
+              <div>
+                <h4>${doc.name}</h4>
+                <p>${doc.category} • Google Drive</p>
+              </div>
+              <span class="badge">Drive</span>
+            </div>
+            <div class="document-actions">
+              <a class="action-link" href="${doc.driveLink}" target="_blank">Preview</a>
+              <a class="action-link" href="${doc.driveDownload}" target="_blank">Download</a>
+              <button class="danger" onclick="deleteDocument(${doc.id})">Delete</button>
+            </div>
+          </article>`).join('');
+      }
+
+      // Init
+      renderAll();
+    </script>
+  </body>
 </html>
